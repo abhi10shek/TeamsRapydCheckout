@@ -2,8 +2,8 @@ const crypto = require('crypto');
 const CryptoJS = require("crypto-js");
 const rp = require("request-promise-native");
 
-const accessKey = '7436870CD17C0388E156';
-const secretKey = '1a3bc584cb84ad626fa033584fd7d3fb7ffa33c80e8b3d5a09cca12e685d99b482a6c86aafc5bfa8';
+const accessKey = process.env.RAPYD_ACCESSKEY;
+const secretKey = process.env.RAPYD_SECRETKEY;
 const log = false;
 const API_BASE_URL = "https://sandboxapi.rapyd.net"; //for production mode change to 'https://plugins.rapyd.net'
 const TEST_MODE='true';//for production mode change to 'false' 
@@ -102,17 +102,6 @@ function isSignatureValid(req){
     }
     return false;
 }
-// let body={
-//     currency:'SGD',//supported currency - for example "EUR",
-//     country:'SG',//supported country code - for example "AT",
-//     amount:100//for example - 10,
-//   };
-// makeRequest('POST', '/v1/checkout', body).then((response) => {
-//     // if(response && response.body){
-//         console.log(response.body.data.redirect_url)
-//         // taskInfo.url = taskInfo.fallbackUrl = checkout_id
-//     // }
-//   })
 
 module.exports = {
     makeRequest,

@@ -42,12 +42,16 @@
                     ],
                     "commands": [
                         {
-                            "title": "welcome",
-                            "description": "Resend welcome card of this Bot"
+                            "title": "donate",
+                            "description": "Start a fundraiser/donation campaign within your Team"
                         },
                         {
-                            "title": "learn",
-                            "description": "Learn about Adaptive Card and Bot Command"
+                            "title": "reimb",
+                            "description": "Apply for reimbursement of company expenses."
+                        },
+                        {
+                            "title": "shop",
+                            "description": "Setup and showcase merch for company events or fundraiser."
                         }
                     ]
                 }

@@ -42,13 +42,15 @@ app.get('/checkout/:checkoutid', (req, res) => {
   res.render('main', {
     data: req.params['checkoutid'],
     metadata: metadata,
+    botid: process.env.botid
   })
 });
 
 app.get('/checkout_shop/:checkoutid', (req, res) => {
   res.render('main', {
     data: req.params['checkoutid'],
-    metadata: {"shop": true}
+    metadata: {"shop": true},
+    botid: process.env.botid
   })
 });
 
@@ -115,7 +117,8 @@ app.post("/upload", (request, response) => {
   
       var forMe = {
         "sellingData" : sellData,
-        "reimbinfo": request.body["reimbinfo"]
+        "reimbinfo": request.body["reimbinfo"],
+        "botid": process.env.botid
       };
       console.log(forMe);
       response.render('viewData', forMe);

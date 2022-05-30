@@ -1,8 +1,7 @@
 const axios = require("axios");
 const querystring = require("querystring");
 const { TeamsActivityHandler, CardFactory, TurnContext, MessageFactory, BotFrameworkAdapter, TeamsInfo} = require("botbuilder");
-const rawWelcomeCard = require("./adaptiveCards/welcome.json");
-const rawLearnCard = require("./adaptiveCards/learn.json");
+const rawDonationCard = require("./adaptiveCards/donation.json");
 const rawUploadLearnCard = require("./adaptiveCards/uploadform.json");
 const rawBuyCard = require("./adaptiveCards/buy.json");
 const rawFormCard = require("./adaptiveCards/form.json");
@@ -16,7 +15,7 @@ class TeamsBot extends TeamsActivityHandler {
   constructor() {
     super();
 
-    this.baseUrl = 'https://TeamsRapydBackend.abhishekreddypa.repl.co';
+    this.baseUrl = 'https://TeamsRapydBackend.abhishekreddypa.repl.co'; //Replit hosted backend to handle task module/Rapyd operations
     
     this.onMessage(async (context, next) => {
       let txt = context.activity.text;
@@ -30,17 +29,6 @@ class TeamsBot extends TeamsActivityHandler {
 
       // Trigger command by IM text
       switch (txt) {
-        case "welcome": {
-          const card = cardTools.AdaptiveCards.declareWithoutData(rawWelcomeCard).render();
-          await context.sendActivity({ attachments: [CardFactory.adaptiveCard(card)] });
-          break;
-        }
-        case "learn": {
-          // this.likeCountObj.likeCount = 0;
-          const card = cardTools.AdaptiveCards.declare(rawLearnCard).render({"likeCount":0});
-          await context.sendActivity({ attachments: [CardFactory.adaptiveCard(card)] });
-          break;
-        }
         case "donate": {
           const card = cardTools.AdaptiveCards.declareWithoutData(rawFormCard).render();
           await context.sendActivity({ attachments: [CardFactory.adaptiveCard(card)] });
@@ -72,7 +60,7 @@ class TeamsBot extends TeamsActivityHandler {
       const membersAdded = context.activity.membersAdded;
       for (let cnt = 0; cnt < membersAdded.length; cnt++) {
         if (membersAdded[cnt].id) {
-          const card = cardTools.AdaptiveCards.declareWithoutData(rawWelcomeCard).render();
+          const card = cardTools.AdaptiveCards.declareWithoutData(rawDonationCard).render();
           await context.sendActivity({ attachments: [CardFactory.adaptiveCard(card)] });
           break;
         }
@@ -145,7 +133,7 @@ class TeamsBot extends TeamsActivityHandler {
             value: {
               url: this.baseUrl + '/?reimbinfo=' + cardTaskFetchValue.messageId,
               fallbackUrl: this.baseUrl + '/?reimbinfo=' + cardTaskFetchValue.messageId
-            },//4723b733-655f-44d9-a43d-eb131ed03dcd
+            },
             height: 'large',
             width: 'large'
           }};
@@ -240,7 +228,7 @@ class TeamsBot extends TeamsActivityHandler {
       card_data.raised = +card_data.raised + +payment_info.amount
       card_data.donatestr = JSON.stringify(card_data)
       await context.sendActivity(MessageFactory.text(payment_info.payment_method_data.name + " contributed an amount of " + payment_info.amount + " " + payment_info.currency_code + " to the fundraiser."));
-      const card = cardTools.AdaptiveCards.declare(rawWelcomeCard).render(card_data);
+      const card = cardTools.AdaptiveCards.declare(rawDonationCard).render(card_data);
       await context.updateActivity({
         type: "message",
         id: context.activity.conversation.id.split("=")[1],
@@ -267,7 +255,7 @@ class TeamsBot extends TeamsActivityHandler {
       }
       const newcontext = {
         conversation: {
-          id: 'a:1nxtwlZccQhi_N_Y3jGYpQAEe5adYWKnh4oNEYPeArLHJsizGI8OBVgGqQ7ZyLWp7eT5cyGNBsro_VvjD3LM1mtDzpOWa_R5r1RsqjS0C8J4CgPAkucZVAgkac8aI99q0'
+          id: process.env.MANAGER
         },
         serviceUrl : "https://smba.trafficmanager.net/amer/"
       }
@@ -303,7 +291,7 @@ class TeamsBot extends TeamsActivityHandler {
       }
       const newcontext = {
         conversation: {
-          id: '19:2b3ff296ae8f45eaa078005e81ca6fb6@thread.tacv2'
+          id: process.env.ANNOUNCE_CHANNEL
         },
         serviceUrl : "https://smba.trafficmanager.net/amer/"
       }
@@ -317,14 +305,6 @@ class TeamsBot extends TeamsActivityHandler {
       })
       await context.sendActivity(MessageFactory.text("Information has been shared with your concerned Team."));
       return { statusCode: 200 };
-      // Return TaskModuleResponse
-      // return {
-      //     // TaskModuleMessageResponse
-      //     task: {
-      //         type: 'message',
-      //         value: 'Thanks!'
-      //     }
-      // };
     }
     
   }
@@ -354,7 +334,7 @@ class TeamsBot extends TeamsActivityHandler {
       }
       const newcontext = {
         conversation: {
-          id: '19:2b3ff296ae8f45eaa078005e81ca6fb6@thread.tacv2'
+          id: process.env.ANNOUNCE_CHANNEL
         },
         serviceUrl : "https://smba.trafficmanager.net/amer/"
       }
@@ -369,7 +349,7 @@ class TeamsBot extends TeamsActivityHandler {
         }
         donate_obj.by = context.activity.from.name
         donate_obj.donatestr = JSON.stringify(donate_obj)
-        const card = cardTools.AdaptiveCards.declare(rawWelcomeCard).render(donate_obj);
+        const card = cardTools.AdaptiveCards.declare(rawDonationCard).render(donate_obj);
         await contex.sendActivity({ attachments: [CardFactory.adaptiveCard(card)] });
       })
       const card = CardFactory.heroCard(
@@ -401,8 +381,7 @@ class TeamsBot extends TeamsActivityHandler {
     else if(invokeValue.action.verb === "manager_approve"){
       const newcontext = {
         conversation: {
-          // id: '19:2b3ff296ae8f45eaa078005e81ca6fb6@thread.tacv2'
-          id:'19:dRKURCu6OcKITFNxSlyaWOxjvX0IGE-79Jbx2uFyVy41@thread.tacv2'
+          id:'process.env.FINANCE_CHANNEL'
         },
         serviceUrl : "https://smba.trafficmanager.net/amer/"
       }
@@ -507,7 +486,7 @@ class TeamsBot extends TeamsActivityHandler {
 async function createCardCommand(context, action) {
   // The user has chosen to create a card by choosing the 'Create Card' context menu command.
   const data = action.data;
-  // const DonateCard = CardFactory.adaptiveCard(rawWelcomeCard);
+  // const DonateCard = CardFactory.adaptiveCard(rawDonationCard);
   // this.likeCountObj.likeCount = 0;
   let newDono = {
     Description: "no"
@@ -528,12 +507,6 @@ async function createCardCommand(context, action) {
   //     attachments: [attachment],
   //   },
   // };
-}
-
-function renderToString(source, data) {
-  var template = handlebars.compile(source);
-  var outputString = template(data);
-  return outputString;
 }
 
 function shareMessageCommand(context, action) {
