@@ -12,7 +12,7 @@ This is a simple hello world application with both Bot and Messaging extension c
 
 - [NodeJS](https://nodejs.org/en/)
 - An M365 account. If you do not have M365 account, apply one from [M365 developer program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
-- For this Demo and local setup use the following credentials: (email: password)     abhishek@py3t.onmicrosoft.com: SgLV8rfV6pkXWVX
+- For this Demo and local setup use the credentials provided on Devpost in the additional info section: (email: password) 
 - Setup environment variables as requested or contact us for more info on the setup.
 
 - [Teams Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version after 1.55 or [TeamsFx CLI](https://aka.ms/teamsfx-cli)
