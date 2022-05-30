@@ -1,0 +1,69 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+          {
+              "type": "Column",
+              "width": 3,
+              "items": [
+                  {
+                      "type": "TextBlock",
+                      "text": "${title}",
+                      "weight": "bolder",
+                      "size": "extraLarge",
+                      "spacing": "none",
+                      "wrap": true
+                  },
+                  {
+                      "type": "TextBlock",
+                      "text": "Raised by ${by}.   ${donation_type}",
+                      "isSubtle": true,
+                      "spacing": "none",
+                      "wrap": true
+                  },
+                  {
+                      "type": "TextBlock",
+                      "text": "Raised until now ${raised} /**${target}**",
+                      "size":"Large",
+                      "spacing": "large",
+                      "wrap": true
+                  },
+                  {
+                      "type": "TextBlock",
+                      "text": "${desc}",
+                      "size": "small",
+                      "wrap": true
+                  }
+              ]
+          }
+      ]
+  },
+    {
+      "type": "Input.Text",
+      "id": "amount",
+      "placeholder": "Amount you would like to donate"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Donate",
+      "data": {
+        "msteams": {
+            "type": "task/fetch"
+        },
+        "wallet": "${wallet_id}",
+        "donatestr": "${donatestr}"
+      }
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "More Info",
+      "url": "${link}"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.4"
+}
